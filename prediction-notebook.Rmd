@@ -26,10 +26,14 @@ download.file(paste0(url,testfile)
 traindf <- read.csv(paste0(url,trainfile))
 testdf <- read.csv(paste0(url,testfile))
 
+unique(traindf$user_name)
 
 ```
 
-```{r sqlite, echo=TRUE,include=FALSE}
+
+### Data Management
+Due to the size, a SQLite db engine will be used to query the data
+```{r sqlite, echo=TRUE,include=TRUE}
 library(DBI)
 # Create an ephemeral in-memory RSQLite database
 con <- dbConnect(RSQLite::SQLite(), ":memory:")
@@ -37,11 +41,14 @@ con <- dbConnect(RSQLite::SQLite(), ":memory:")
 
 dbWriteTable(con, "traindata", traindf)
 dbWriteTable(con, "testdata", testdf)
-res <- dbSendQuery(con, "SELECT * FROM traindata")
-trainres <- dbGetQuery(con,"select * from traindata")
-dbFetch(res)
-#dbClearResult(res)
-#dbDisconnect(con) 
+trainres <- dbSendQuery(con, "SELECT * FROM traindata")
+###trainres <- dbGetQuery(con,"select * from traindata")
+dbFetch(res = trainres,n=10)
+
+
+
+###dbClearResult(res)
+##dbDisconnect(con) 
 ```
 
 
@@ -49,6 +56,16 @@ dbFetch(res)
 
 ```{r preprocess,  echo = TRUE, include= TRUE}
 library(caret);library(kernlab);
-inTrain <- createDataPartition(y=traindf$)
+inTrain <- createDataPartition(y=traindf$total_accel_arm
+                               ,p=0.50, list = FALSE)
+inTest <- createDataPartition(y=testdf$total_accel_arm
+                               ,p=0.75, list = FALSE)
+training <- traindf[inTrain,]
+testing <- testdf[inTest,]
+
+plot(training$total_accel_arm,training$)
+
 
 ```
+
+
