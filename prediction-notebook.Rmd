@@ -13,7 +13,9 @@ Accelerometers on the belt, forearm, arm, and dumbell will provide the data.
 
 ### Data Preparation
 
-```{r}
+Source: http://web.archive.org/web/20161224072740/http:/groupware.les.inf.puc-rio.br/har
+
+```{r fetchdata}
 url <- "https://d396qusza40orc.cloudfront.net/predmachlearn/"
 trainfile <- "pml-training.csv"
 download.file(paste0(url,trainfile)
@@ -21,7 +23,19 @@ download.file(paste0(url,trainfile)
 testfile <- "pml-testing.csv"
 download.file(paste0(url,testfile)
               ,destfile = paste0(getwd(),"/",testfile))
-
+traindf <- read.csv(paste0(url,trainfile))
+testdf <- read.csv(paste0(url,testfile))
 ```
 
+```{r sqlite, echo=TRUE}
+library(DBI)
+# Create an ephemeral in-memory RSQLite database
+con <- dbConnect(RSQLite::SQLite(), ":memory:")
 
+
+dbWriteTable(con, "traindata", traindf)
+dbWriteTable(con, "testdata", testdf)
+dbListFields(con, "traindata")
+res <- dbSendQuery(con, "SELECT * FROM traindata LIMIT 10;")
+dbFetch(res)
+```
