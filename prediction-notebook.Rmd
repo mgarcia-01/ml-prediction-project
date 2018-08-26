@@ -15,7 +15,7 @@ Accelerometers on the belt, forearm, arm, and dumbell will provide the data.
 
 Source: http://web.archive.org/web/20161224072740/http:/groupware.les.inf.puc-rio.br/har
 
-```{r fetchdata}
+```{r fetchdata, echo=FALSE, include=TRUE}
 url <- "https://d396qusza40orc.cloudfront.net/predmachlearn/"
 trainfile <- "pml-training.csv"
 download.file(paste0(url,trainfile)
@@ -25,9 +25,11 @@ download.file(paste0(url,testfile)
               ,destfile = paste0(getwd(),"/",testfile))
 traindf <- read.csv(paste0(url,trainfile))
 testdf <- read.csv(paste0(url,testfile))
+
+
 ```
 
-```{r sqlite, echo=TRUE}
+```{r sqlite, echo=TRUE,include=FALSE}
 library(DBI)
 # Create an ephemeral in-memory RSQLite database
 con <- dbConnect(RSQLite::SQLite(), ":memory:")
@@ -35,7 +37,18 @@ con <- dbConnect(RSQLite::SQLite(), ":memory:")
 
 dbWriteTable(con, "traindata", traindf)
 dbWriteTable(con, "testdata", testdf)
-dbListFields(con, "traindata")
-res <- dbSendQuery(con, "SELECT * FROM traindata LIMIT 10;")
+res <- dbSendQuery(con, "SELECT * FROM traindata")
+trainres <- dbGetQuery(con,"select * from traindata")
 dbFetch(res)
+#dbClearResult(res)
+#dbDisconnect(con) 
+```
+
+
+### Pre-processing
+
+```{r preprocess,  echo = TRUE, include= TRUE}
+library(caret);library(kernlab);
+inTrain <- createDataPartition(y=traindf$)
+
 ```
