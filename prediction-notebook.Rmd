@@ -1,0 +1,27 @@
+---
+title: "Prediction Assignement"
+output: html_notebook
+author: "Michael Garcia"
+date: "August 26, 2018"
+---
+
+## Purpose
+The purpose of this analysis is to develop a model that will predict the
+manner in which participants exercise. The study consists of 6 participants.
+Accelerometers on the belt, forearm, arm, and dumbell will provide the data.
+
+
+### Data Preparation
+
+```{r}
+url <- "https://d396qusza40orc.cloudfront.net/predmachlearn/"
+trainfile <- "pml-training.csv"
+download.file(paste0(url,trainfile)
+              ,destfile = paste0(getwd(),"/",trainfile))
+testfile <- "pml-testing.csv"
+download.file(paste0(url,testfile)
+              ,destfile = paste0(getwd(),"/",testfile))
+
+```
+
+
