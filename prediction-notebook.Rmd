@@ -63,8 +63,7 @@ inTest <- createDataPartition(y=testdf$total_accel_arm
 training <- traindf[inTrain,]
 testing <- testdf[inTest,]
 
-plot(training$total_accel_arm,training$)
-
+plot(training$total_accel_arm,training$cvtd_timestamp)
 
 ```
 
