@@ -83,7 +83,10 @@ training <- training[complete.cases(training),]
 modFit <- train(classe ~ .
                 ,method = "rpart"
                 ,data = training)
-print(modFit$finalModel)
+
+plot(modFit$finalModel
+     , uniform=TRUE
+     ,main = "Classification Tree")
 
 ```
 
