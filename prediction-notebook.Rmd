@@ -33,7 +33,7 @@ testdf <- read.csv(paste0(url,testfile))
 
 ### Data Management
 Due to the size, a SQLite db engine will be used to query the data
-```{r sqlite, echo=TRUE,include=TRUE}
+```{r sqlite, echo=FALSE,include=FALSE}
 library(DBI)
 # Create an ephemeral in-memory RSQLite database
 con <- dbConnect(RSQLite::SQLite(), ":memory:")
@@ -43,7 +43,7 @@ dbWriteTable(con, "traindata", traindf)
 dbWriteTable(con, "testdata", testdf)
 trainres <- dbSendQuery(con, "SELECT * FROM traindata")
 ###trainres <- dbGetQuery(con,"select * from traindata")
-dbFetch(res = trainres,n=10)
+#dbFetch(res = trainres,n=10)
 
 
 
@@ -73,7 +73,7 @@ plot(training$total_accel_arm,training$cvtd_timestamp)
 library(caret)
 
 inTrain <- createDataPartition(y=traindf$classe
-                               ,p = 0.7
+                               ,p = 0.95
                                ,list = FALSE)
 training <- traindf[inTrain,]
 ## remove row with NA's ##
@@ -85,8 +85,15 @@ modFit <- train(classe ~ .
                 ,data = training)
 
 plot(modFit$finalModel
-     , uniform=TRUE
+     , uniform=FALSE
      ,main = "Classification Tree")
+
+```
+
+
+```{r linear, include=TRUE, echo=TRUE}
+
+training
 
 ```
 
