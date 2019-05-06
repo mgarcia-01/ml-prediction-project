@@ -96,3 +96,76 @@ predictRandForest <- predict(modFitRandForest, newdata=TestSet)
 confMatRandForest <- confusionMatrix(predictRandForest, TestSet$classe)
 confMatRandForest
 ```
+
+
+```{r accuracy, echo=TRUE, include=TRUE}
+# plot matrix results
+plot(confMatRandForest$table, col = confMatRandForest$byClass, 
+     main = paste("Random Forest - Accuracy =",
+                  round(confMatRandForest$overall['Accuracy'], 4)))
+```
+
+
+
+
+## Decision Tree
+
+```{r decisiontree, echo=TRUE, include=TRUE}
+# model fit
+set.seed(301)
+modFitDecTree <- rpart(classe ~ ., data=TrainSet, method="class")
+fancyRpartPlot(modFitDecTree)
+```
+
+
+```{r predictiontesttree, echo=TRUE, include=TRUE}
+# prediction on Test dataset
+predictDecTree <- predict(modFitDecTree, newdata=TestSet, type="class")
+confMatDecTree <- confusionMatrix(predictDecTree, TestSet$classe)
+confMatDecTree
+```
+
+```{r matrixresultsplot, echo=TRUE, include=TRUE}
+# plot matrix results
+plot(confMatDecTree$table, col = confMatDecTree$byClass, 
+     main = paste("Decision Tree - Accuracy =",
+                  round(confMatDecTree$overall['Accuracy'], 4)))
+```
+
+
+
+```{r Generalizedboost, echo=TRUE, include=TRUE}
+# model fit
+set.seed(301)
+controlGBM <- trainControl(method = "repeatedcv", number = 5, repeats = 1)
+modFitGBM  <- train(classe ~ ., data=TrainSet, method = "gbm",
+                    trControl = controlGBM, verbose = FALSE)
+modFitGBM$finalModel
+```
+
+
+```{r testGBM, echo=TRUE, include=TRUE}
+# prediction on Test dataset
+predictGBM <- predict(modFitGBM, newdata=TestSet)
+confMatGBM <- confusionMatrix(predictGBM, TestSet$classe)
+confMatGBM
+
+```
+
+
+
+
+```{r plotmatrixgbl, include=TRUE,echo=TRUE}
+# plot matrix results
+plot(confMatGBM$table, col = confMatGBM$byClass, 
+     main = paste("GBM - Accuracy =", round(confMatGBM$overall['Accuracy'], 4)))
+
+```
+
+
+
+```{r testmodel, echo=TRUE, include=TRUE}
+predictTEST <- predict(modFitRandForest, newdata=testing)
+predictTEST
+
+```
