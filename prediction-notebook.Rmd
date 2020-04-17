@@ -68,6 +68,17 @@ plot(training$total_accel_arm,training$cvtd_timestamp)
 ```
 
 
+### Correlations
+Exploratory chart to display correlation strength between activities
+```{r corchart, include=TRUE, echo=TRUE}
+corMatrix <- cor(TrainSet[, -54])
+corrplot(corMatrix, order = "FPC", method = "color", type = "lower", 
+         tl.cex = 0.8, tl.col = rgb(0, 0, 0))
+```
+
+
+
+### Classification Tree
 
 ```{r modfit, tree, echo=TRUE}
 library(caret)
@@ -92,8 +103,8 @@ plot(modFit$finalModel
 
 
 ```{r linear, include=TRUE, echo=TRUE}
-
-training
+modFit
+#training
 
 ```
 
